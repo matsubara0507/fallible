@@ -1,0 +1,49 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.31.2.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 67a635d1f1d7b39a6c531eea377d5a1ddef98e0201a80a128bfbde7cadcca3ae
+
+name:           fallible
+version:        0.1.0
+description:    Please see the README on GitHub at <https://github.com/matsubara0507/mixlogue#readme>
+category:       Data
+homepage:       https://github.com/matsubara0507/fallible#readme
+author:         MATSUBARA Nobutada
+maintainer:     t12307043@gunma-u.ac.jp
+copyright:      MATSUBARA Nobutada
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    CHANGELOG.md
+
+library
+  exposed-modules:
+      Data.Fallible
+  other-modules:
+      Paths_fallible
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
+  build-depends:
+      base >=4.7 && <5
+    , transformers
+  default-language: Haskell2010
+
+test-suite mixlogue-test
+  type: exitcode-stdio-1.0
+  main-is: Driver.hs
+  hs-source-dirs:
+      test
+  ghc-options: -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
+  build-depends:
+      base >=4.7 && <5
+    , fallible
+    , tasty
+    , tasty-hspec
+    , transformers
+  default-language: Haskell2010
