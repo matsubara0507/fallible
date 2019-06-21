@@ -14,12 +14,33 @@ module Data.Fallible
   , lift
   ) where
 
+import Control.Applicative
+import Data.Functor.Identity
+import Data.Proxy
+import Data.Void
 import           Control.Monad.Trans.Class (lift)
 import           Control.Monad.Trans.Cont  as Cont
 
-class Fallible f where
+-- | Types that may contain failures.
+class Applicative f => Fallible f where
   type Failure f :: *
+
+  -- | Get a success or a failure.
+  --
+  -- @'tryFallible' (pure a) ≡ Right a@
   tryFallible :: f a -> Either (Failure f) a
+
+instance Fallible Identity where
+  type Failure Identity = Void
+  tryFallible = Right . runIdentity
+
+instance Monoid e => Fallible (Const e) where
+  type Failure (Const e) = e
+  tryFallible = Left . getConst
+
+instance Fallible Proxy where
+  type Failure Proxy = ()
+  tryFallible _ = Left ()
 
 instance Fallible Maybe where
   type Failure Maybe = ()
