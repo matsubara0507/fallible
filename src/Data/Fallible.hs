@@ -1,8 +1,21 @@
 {-# LANGUAGE TypeFamilies #-}
 
-module Data.Fallible where
+module Data.Fallible
+  ( Fallible (..)
+  , (??=)
+  , (???)
+  , (!?=)
+  , (!??)
+  , catchFailure
+  , catchFailure_
+  , exit
+  , exitA
+  , module Cont
+  , lift
+  ) where
 
-import           Control.Monad.Trans.Cont
+import           Control.Monad.Trans.Class (lift)
+import           Control.Monad.Trans.Cont  as Cont
 
 class Fallible f where
   type Failure f :: *
