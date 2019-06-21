@@ -31,10 +31,18 @@ t !?= k = t >>= (??=k)
 {-# INLINE (!?=) #-}
 infixl 1 !?=
 
+catchFailure :: (Monad m, Fallible t) => m (t a) -> (Failure t -> m a) -> m a
+catchFailure = (!?=)
+{-# INLINE catchFailure #-}
+
 (!??) :: (Monad m, Fallible t) => m (t a) -> m a -> m a
 t !?? k = t >>= (???k)
 {-# INLINE (!??) #-}
 infixl 1 !??
+
+catchFailure_ :: (Monad m, Fallible t) => m (t a) -> m a -> m a
+catchFailure_ = (!??)
+{-# INLINE catchFailure_ #-}
 
 exit :: m r -> ContT r m a
 exit = ContT . const
