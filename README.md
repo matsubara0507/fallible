@@ -67,9 +67,9 @@ invalid token
 
 ## Usage
 
-### With Slack
+### With Stack
 
-write to slack.yaml:
+write to stack.yaml:
 
 ```yaml
 extra-deps:
