@@ -27,11 +27,9 @@ library:
   source-dirs: src
 
 tests:
-  mixlogue-test:
-    main: Driver.hs
-    source-dirs: test
+  fallible-example:
+    main: Main.hs
+    source-dirs: example
     dependencies:
     - fallible
-    - tasty
-    - tasty-hspec
     other-modules: []
