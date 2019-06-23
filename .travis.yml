@@ -72,7 +72,7 @@ install:
 
       travis_retry curl -sL https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 
-      stack upgrade --binary-version=$STACK_VERSION
+      travis_retry stack upgrade --binary-version=$STACK_VERSION
 
       stack --numeric-version
       stack --hpack-numeric-version
