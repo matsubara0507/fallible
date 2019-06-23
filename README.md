@@ -82,14 +82,14 @@ invalid token
 
 ## Become a beta tester
 
-### with Stack
+### Stack
 
 write to stack.yaml:
 
 ```yaml
 extra-deps:
   github: matsubara0507/fallible
-  commit: xxx
+  commit: XXXXXXX
 ```
 
 ### cabal
