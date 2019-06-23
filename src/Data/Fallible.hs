@@ -14,12 +14,12 @@ module Data.Fallible
   , lift
   ) where
 
-import Control.Applicative
-import Data.Functor.Identity
-import Data.Proxy
-import Data.Void
+import           Control.Applicative
 import           Control.Monad.Trans.Class (lift)
 import           Control.Monad.Trans.Cont  as Cont
+import           Data.Functor.Identity
+import           Data.Proxy
+import           Data.Void
 
 -- | Types that may contain failures.
 class Applicative f => Fallible f where

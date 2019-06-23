@@ -1,0 +1,96 @@
+language: haskell
+dist: xenial
+
+cache:
+  directories:
+    - $HOME/.cabal/packages
+    - $HOME/.cabal/store
+    - $HOME/.stack
+    - $TRAVIS_BUILD_DIR/.stack-work
+
+cabal: "2.4"
+env:
+  global:
+    - STACK_VERSION=2.1.1
+    - HPACK_VERSION=0.31.2
+
+matrix:
+  fast_finish: true
+  include:
+    - env: BUILD=cabal
+      ghc: "8.6.3"
+
+    - env: BUILD=cabal
+      ghc: "8.4.4"
+
+    - env: BUILD=cabal
+      ghc: "8.2.2"
+
+    # --system-ghc is used to take advantage of language: haskell and save build time.
+    # If the stack resolver ghc and system-ghc become different, stack will download the right ghc
+    - env: BUILD=stack ARGS="--resolver lts-11 --system-ghc"
+      ghc: "8.2.2"
+
+    - env: BUILD=stack ARGS="--resolver lts-12 --system-ghc"
+      ghc: "8.4.4"
+
+    - env: BUILD=stack ARGS="--resolver lts-13 --system-ghc"
+      ghc: "8.6.3"
+
+  allow_failures: []
+
+before_install:
+  - case "$BUILD" in
+      cabal)
+        export PATH="$HOME"/.cabal/bin:$PATH
+        ;;
+      stack)
+        export PATH="$HOME"/.local/bin:$PATH
+        ;;
+    esac
+
+install:
+- |
+  set -ex
+  case "$BUILD" in
+    cabal)
+      mkdir -p $HOME/.cabal/bin
+
+      curl --progress-bar --location -o hpack.gz "https://github.com/sol/hpack/releases/download/$HPACK_VERSION/hpack_linux.gz"
+      gzip -d hpack.gz
+      chmod u+x ./hpack
+      mv hpack $HOME/.cabal/bin/
+
+      hpack .
+
+      cabal --numeric-version
+      hpack --version
+      ghc --version
+      ;;
+    stack)
+      mkdir -p $HOME/.local/bin
+
+      travis_retry curl -sL https://get.haskellstack.org/stable/linux-x86_64.tar.gz | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
+
+      travis_retry stack upgrade --binary-version=$STACK_VERSION
+
+      stack --numeric-version
+      stack --hpack-numeric-version
+      ghc --version
+      ;;
+  esac
+  set +ex
+
+script:
+- |
+  set -ex
+  case "$BUILD" in
+    cabal)
+      cabal new-update
+      cabal new-test all
+      ;;
+    stack)
+      stack --no-terminal $ARGS test --haddock --no-haddock-deps
+      ;;
+  esac
+  set +ex

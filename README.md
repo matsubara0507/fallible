@@ -1,5 +1,7 @@
 # fallible
 
+[![Build Status](https://travis-ci.com/matsubara0507/fallible.svg?branch=master)](https://travis-ci.com/matsubara0507/fallible)
+
 An interface for fallible data types like Maybe and Either.
 
 ## Example
@@ -82,14 +84,14 @@ invalid token
 
 ## Become a beta tester
 
-### with Stack
+### Stack
 
 write to stack.yaml:
 
 ```yaml
 extra-deps:
   github: matsubara0507/fallible
-  commit: xxx
+  commit: XXXXXXX
 ```
 
 ### cabal
