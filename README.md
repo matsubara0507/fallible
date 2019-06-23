@@ -1,5 +1,7 @@
 # fallible
 
+[![Build Status](https://travis-ci.com/matsubara0507/fallible.svg?branch=master)](https://travis-ci.com/matsubara0507/fallible)
+
 An interface for fallible data types like Maybe and Either.
 
 ## Example
