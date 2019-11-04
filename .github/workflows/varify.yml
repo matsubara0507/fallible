@@ -23,7 +23,7 @@ jobs:
     - name: Cache .cabal
       uses: actions/cache@preview
       with:
-        path: ~/.cabal
+        path: ~/.cabal/store
         key: ${{ matrix.ghc }}-cabal-${{ hashFiles('**/fallible.cabal') }}
         restore-keys: |
           ${{ matrix.ghc }}-cabal-
