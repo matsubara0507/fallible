@@ -16,6 +16,14 @@ jobs:
       with:
         fetch-depth: 1
 
+    - name: Cache .cabal
+      uses: actions/cache@preview
+      with:
+        path: ~/.cabal
+        key: ${{ matrix.ghc }}-cabal-${{ hashFiles('**/fallible.cabal') }}
+        restore-keys: |
+          ${{ matrix.ghc }}-cabal-
+
     - uses: actions/setup-haskell@v1
       name: Setup Haskell
       with:
