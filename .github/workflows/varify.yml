@@ -1,0 +1,33 @@
+name: Verify PR
+
+on: pull_request
+
+jobs:
+  build:
+    name: ghc ${{ matrix.ghc }}
+    runs-on: ubuntu-16.04
+    strategy:
+      matrix:
+        ghc: ["8.2.2", "8.4.4", "8.6.5", "8.8.1"]
+        cabal: ["3.0"]
+
+    steps:
+    - uses: actions/checkout@master
+      with:
+        fetch-depth: 1
+
+    - uses: actions/setup-haskell@v1
+      name: Setup Haskell
+      with:
+        ghc-version: ${{ matrix.ghc }}
+        cabal-version: ${{ matrix.cabal }}
+
+    - name: Install dependencies
+      run: |
+        cabal v2-update
+        cabal v2-build --only-dependencies
+
+    - name: Build & test
+      run: |
+        cabal v2-build
+        cabal v2-test
