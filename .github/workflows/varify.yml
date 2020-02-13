@@ -1,0 +1,44 @@
+name: Verify
+
+on:
+  pull_request: null
+  push:
+    branches:
+    - master
+
+jobs:
+  build:
+    name: ghc ${{ matrix.ghc }}
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        ghc: ["8.2.2", "8.4.4", "8.6.5", "8.8.1"]
+        cabal: ["3.0"]
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Cache .cabal
+      uses: actions/cache@v1.1.2
+      with:
+        path: ~/.cabal
+        key: ${{ matrix.ghc }}-cabal-${{ hashFiles('**/fallible.cabal') }}
+        restore-keys: |
+          ${{ matrix.ghc }}-cabal-
+
+    - uses: actions/setup-haskell@v1
+      name: Setup Haskell
+      with:
+        ghc-version: ${{ matrix.ghc }}
+        cabal-version: ${{ matrix.cabal }}
+
+    - name: Install dependencies
+      run: |
+        cabal v2-update
+        cabal v2-build --only-dependencies
+
+    - name: Build & test
+      run: |
+        cabal v2-build
+        cabal v2-test
